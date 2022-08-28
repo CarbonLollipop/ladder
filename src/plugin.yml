@@ -1,0 +1,5 @@
+name: Ladder
+version: 1.0
+author: CarbonLollipop
+main: com.carbonlollipop.ladder.Main
+api-version: 1.19
