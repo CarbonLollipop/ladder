@@ -16,7 +16,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 // Chat handler
 
-// TODO: CLEAN THIS CLEAN THIS CLEAN THIS
+// todo: CLEAN THIS CLEAN THIS CLEAN THIS
 
 public class Chat implements Listener {
 
