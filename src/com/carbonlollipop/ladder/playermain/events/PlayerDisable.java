@@ -10,11 +10,15 @@ import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 
 import com.carbonlollipop.ladder.librarymain.events.Events;
+import com.carbonlollipop.ladder.librarymain.util.InstanceChecker;
 
 public class PlayerDisable implements Listener {
     @EventHandler
-    public static void Ouch(EntityDamageEvent event) {
-        if(!InstanceChecker.isPlayer(event)) { return; }
+    public static void EntityDamageEvent(EntityDamageEvent event) {
+        if(!InstanceChecker.isPlayer(event)) {
+            return;
+        }
+
 
         Player p = (Player) event.getEntity();
 
@@ -22,9 +26,7 @@ public class PlayerDisable implements Listener {
             event.setDamage(0);
         }
 
-        if(
-        ((Player) event.getEntity()).getPlayer().getInventory().getChestplate().getType() == Material.NETHERITE_CHESTPLATE
-        && event.getCause() == DamageCause.ENTITY_ATTACK) {
+        if(((Player) event.getEntity()).getPlayer().getInventory().getChestplate().getType() == Material.NETHERITE_CHESTPLATE && event.getCause() == DamageCause.ENTITY_ATTACK) {
             event.setCancelled(true);
             ((Player) event.getEntity()).damage(event.getDamage());
         }
@@ -39,12 +41,12 @@ public class PlayerDisable implements Listener {
     }
 
     @EventHandler
-    public static void be(EntityRegainHealthEvent event) {
+    public static void EntityRegainHealthEvent(EntityRegainHealthEvent event) {
         event.setCancelled(true);
     }
 
     @EventHandler
-    public static void mang(FoodLevelChangeEvent event) {
+    public static void FoodLevelChangeEvent(FoodLevelChangeEvent event) {
         event.setCancelled(true);
     }
 }

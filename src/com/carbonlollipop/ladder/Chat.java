@@ -27,27 +27,35 @@ public class Chat implements Listener {
     static {
         try {
             conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/ladder", "root", "");
-        } catch (SQLException e) {
+        } catch(SQLException e) {
             e.printStackTrace();
         }
+
     }
 
     @EventHandler
     public static void chat(AsyncPlayerChatEvent e) throws SQLException {
         e.setCancelled(true);
         Statement stmt = conn.createStatement();
-        ResultSet row = stmt.executeQuery("SELECT * FROM player WHERE uuid = '"+e.getPlayer().getUniqueId()+"'");
+        ResultSet row = stmt.executeQuery("SELECT * FROM player WHERE uuid = '" + e.getPlayer().getUniqueId() + "'");
         row.next();
 
         ChatColor color;
 
         String rank = row.getString("rank");
-        if ("OWNER".equals(rank)) color = ChatColor.DARK_RED;
-        else if ("BUILDER".equals(rank)) color = ChatColor.LIGHT_PURPLE;
-        else if ("ADMIN".equals(rank)) color = ChatColor.AQUA;
-        else if ("L".equals(rank)) color = ChatColor.GOLD;
-        else if ("DEV".equals(rank)) color = ChatColor.RED;
-        else color = null;
+        if("OWNER".equals(rank)) {
+            color = ChatColor.DARK_RED;
+        } else if("BUILDER".equals(rank)) {
+            color = ChatColor.LIGHT_PURPLE;
+        } else if("ADMIN".equals(rank)) {
+            color = ChatColor.AQUA;
+        } else if("L".equals(rank)) {
+            color = ChatColor.GOLD;
+        } else if("DEV".equals(rank)) {
+            color = ChatColor.RED;
+        } else {
+            color = null;
+        }
 
         if(row.getString("rank").equals("NON")) {
             Bukkit.broadcastMessage(ChatColor.GRAY + e.getPlayer().getName() + ": " + e.getMessage());
@@ -59,20 +67,27 @@ public class Chat implements Listener {
     @EventHandler
     public static void join(PlayerJoinEvent e) throws SQLException {
         Statement stmt = conn.createStatement();
-        stmt.execute("INSERT IGNORE INTO player (uuid, rank) VALUES ('"+e.getPlayer().getUniqueId()+"', 'NON');");
+        stmt.execute("INSERT IGNORE INTO player (uuid, rank) VALUES ('" + e.getPlayer().getUniqueId() + "', 'NON');");
 
-        ResultSet row = stmt.executeQuery("SELECT * FROM player WHERE uuid = '"+e.getPlayer().getUniqueId()+"'");
+        ResultSet row = stmt.executeQuery("SELECT * FROM player WHERE uuid = '" + e.getPlayer().getUniqueId() + "'");
         row.next();
 
         ChatColor color;
 
         String rank = row.getString("rank");
-        if ("OWNER".equals(rank)) color = ChatColor.DARK_RED;
-        else if ("BUILDER".equals(rank)) color = ChatColor.LIGHT_PURPLE;
-        else if ("ADMIN".equals(rank)) color = ChatColor.AQUA;
-        else if ("L".equals(rank)) color = ChatColor.GOLD;
-        else if ("DEV".equals(rank)) color = ChatColor.RED;
-        else color = null;
+        if("OWNER".equals(rank)) {
+            color = ChatColor.DARK_RED;
+        } else if("BUILDER".equals(rank)) {
+            color = ChatColor.LIGHT_PURPLE;
+        } else if("ADMIN".equals(rank)) {
+            color = ChatColor.AQUA;
+        } else if("L".equals(rank)) {
+            color = ChatColor.GOLD;
+        } else if("DEV".equals(rank)) {
+            color = ChatColor.RED;
+        } else {
+            color = null;
+        }
 
         if(row.getString("rank").equals("NON")) {
             e.setJoinMessage(ChatColor.GRAY + e.getPlayer().getName() + ChatColor.GREEN + " joined");
@@ -85,18 +100,25 @@ public class Chat implements Listener {
     public static void join(PlayerQuitEvent e) throws SQLException {
         Statement stmt = conn.createStatement();
 
-        ResultSet row = stmt.executeQuery("SELECT * FROM player WHERE uuid = '"+e.getPlayer().getUniqueId()+"'");
+        ResultSet row = stmt.executeQuery("SELECT * FROM player WHERE uuid = '" + e.getPlayer().getUniqueId() + "'");
         row.next();
 
         ChatColor color;
 
         String rank = row.getString("rank");
-        if ("OWNER".equals(rank)) color = ChatColor.DARK_RED;
-        else if ("BUILDER".equals(rank)) color = ChatColor.LIGHT_PURPLE;
-        else if ("ADMIN".equals(rank)) color = ChatColor.AQUA;
-        else if ("L".equals(rank)) color = ChatColor.GOLD;
-        else if ("DEV".equals(rank)) color = ChatColor.RED;
-        else color = null;
+        if("OWNER".equals(rank)) {
+            color = ChatColor.DARK_RED;
+        } else if("BUILDER".equals(rank)) {
+            color = ChatColor.LIGHT_PURPLE;
+        } else if("ADMIN".equals(rank)) {
+            color = ChatColor.AQUA;
+        } else if("L".equals(rank)) {
+            color = ChatColor.GOLD;
+        } else if("DEV".equals(rank)) {
+            color = ChatColor.RED;
+        } else {
+            color = null;
+        }
 
         if(row.getString("rank").equals("NON")) {
             e.setQuitMessage(ChatColor.GRAY + e.getPlayer().getName() + ChatColor.RED + " left");

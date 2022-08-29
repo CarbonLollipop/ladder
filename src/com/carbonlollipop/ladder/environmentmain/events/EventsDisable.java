@@ -9,7 +9,7 @@ import com.carbonlollipop.ladder.librarymain.events.Events;
 
 public class EventsDisable implements Listener {
     @EventHandler
-    public static void be(BlockIgniteEvent event) {
+    public static void BlockIgniteEvent(BlockIgniteEvent event) {
         if(Events.causedBy(event, IgniteCause.LIGHTNING)) {
             event.setCancelled(true);
         }

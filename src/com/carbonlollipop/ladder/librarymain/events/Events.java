@@ -12,7 +12,9 @@ public class Events {
 
     public static boolean causedBy(EntityDamageEvent event, DamageCause[] cause) {
         for (DamageCause damageCause : cause) {
-            if(event.getCause() == damageCause) { return true; }
+            if(event.getCause() == damageCause) {
+                return true;
+            }
         }
 
         return false;
