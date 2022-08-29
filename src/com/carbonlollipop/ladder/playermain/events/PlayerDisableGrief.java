@@ -9,7 +9,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import com.carbonlollipop.ladder.librarymain.util.LocationUtil;
 import com.carbonlollipop.ladder.playermain.info.Gamemode;
 
-public class DisableGrief implements Listener {
+public class PlayerDisableGrief implements Listener {
     @EventHandler
     public static void move(BlockBreakEvent event) {
         if(!Gamemode.isGamemode(event, GameMode.CREATIVE)) {

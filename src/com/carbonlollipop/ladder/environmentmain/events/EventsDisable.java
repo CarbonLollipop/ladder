@@ -7,7 +7,7 @@ import org.bukkit.event.block.BlockIgniteEvent.IgniteCause;
 
 import com.carbonlollipop.ladder.librarymain.events.Events;
 
-public class Disable implements Listener {
+public class EventsDisable implements Listener {
     @EventHandler
     public static void be(BlockIgniteEvent event) {
         if(Events.causedBy(event, IgniteCause.LIGHTNING)) {

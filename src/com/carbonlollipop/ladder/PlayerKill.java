@@ -1,4 +1,4 @@
-package com.carbonlollipop.ladder.events;
+package com.carbonlollipop.ladder;
 
 import java.util.Random;
 

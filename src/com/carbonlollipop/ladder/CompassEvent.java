@@ -1,4 +1,4 @@
-package com.carbonlollipop.ladder.events;
+package com.carbonlollipop.ladder;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

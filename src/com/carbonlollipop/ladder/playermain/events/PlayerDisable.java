@@ -11,7 +11,7 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 
 import com.carbonlollipop.ladder.librarymain.events.Events;
 
-public class Disable implements Listener {
+public class PlayerDisable implements Listener {
     @EventHandler
     public static void Ouch(EntityDamageEvent event) {
         if(!InstanceChecker.isPlayer(event)) { return; }
