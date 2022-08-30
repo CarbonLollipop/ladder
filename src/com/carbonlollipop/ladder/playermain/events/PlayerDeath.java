@@ -38,6 +38,7 @@ import org.bukkit.util.Vector;
 import com.carbonlollipop.ladder.librarymain.constants.SpecialItemsC;
 import com.carbonlollipop.ladder.librarymain.events.Events;
 import com.carbonlollipop.ladder.librarymain.util.InstanceChecker;
+import com.carbonlollipop.ladder.playermain.info.inventory.InventoryManager;
 
 public class PlayerDeath implements Listener {
 
@@ -75,7 +76,7 @@ public class PlayerDeath implements Listener {
             return;
         }
 
-        if(Events.causedBy(event, DamageCause.LIGHTNING) && ((Player) event.getEntity()).getInventory().getItemInMainHand().getType() == Material.DIAMOND_AXE) {
+        if(Events.causedBy(event, DamageCause.LIGHTNING) && InventoryManager.GetMainHand(event.getEntity()).getType() == Material.DIAMOND_AXE) {
             event.setCancelled(true);
         }
 
@@ -84,51 +85,51 @@ public class PlayerDeath implements Listener {
             event.setCancelled(true);
         }
 
-        if(!(event.getDamager() instanceof Player)) {
+        if(!InstanceChecker.isPlayer(event.getDamager())) {
             return;
         }
 
-        if(((Player) event.getDamager()).getInventory().getItemInMainHand().getType() == Material.CARROT_ON_A_STICK) {
+        if(InventoryManager.GetMainHand(event.getDamager()).getType() == Material.CARROT_ON_A_STICK) {
             ((Player) event.getEntity()).addPotionEffect(PotionEffectType.LEVITATION.createEffect(20, 19));
         }
 
-        if(((Player) event.getDamager()).getInventory().getItemInMainHand().getType() == Material.DIAMOND_AXE) {
+        if(InventoryManager.GetMainHand(event.getDamager()).getType() == Material.DIAMOND_AXE) {
             event.getEntity().getLocation().getWorld().spawnEntity(event.getEntity().getLocation(), EntityType.LIGHTNING);
             event.setDamage(event.getDamage() / 3);
         }
 
-        if(((Player) event.getDamager()).getInventory().getItemInMainHand().getType() == Material.BLAZE_ROD) {
+        if(InventoryManager.GetMainHand(event.getDamager()).getType() == Material.BLAZE_ROD) {
             event.getEntity().setFireTicks(40);
         }
 
-        if(((Player) event.getDamager()).getInventory().getItemInMainHand().getType() == Material.STICK) {
+        if(InventoryManager.GetMainHand(event.getDamager()).getType() == Material.STICK) {
             event.setDamage(0);
         }
 
-        if(((Player) event.getDamager()).getInventory().getItemInMainHand().getType() == Material.IRON_AXE
+        if(InventoryManager.GetMainHand(event.getDamager()).getType() == Material.IRON_AXE
                 && event.getDamager().getUniqueId().toString().equals("531cbd17-1f75-4d6e-b560-833a9d5ed9d7")) {
             event.getEntity().getLocation().getWorld().spawnEntity(event.getEntity().getLocation(), EntityType.LIGHTNING);
             ((Player) event.getEntity()).kickPlayer("banhammerd xd");
         }
 
-        if(((Player) event.getDamager()).getInventory().getItemInMainHand().getType() == Material.IRON_HOE) {
+        if(InventoryManager.GetMainHand(event.getDamager()).getType() == Material.IRON_HOE) {
             event.setDamage(5);
             ((Player) event.getEntity()).addPotionEffect(PotionEffectType.DARKNESS.createEffect(200, 50));
             ((Player) event.getEntity()).addPotionEffect(PotionEffectType.SLOW.createEffect(200, 2));
         }
 
-        if(((Player) event.getDamager()).getInventory().getItemInMainHand().getType() == Material.SLIME_BALL) {
+        if(InventoryManager.GetMainHand(event.getDamager()).getType() == Material.SLIME_BALL) {
             ((Player) event.getEntity()).addPotionEffect(PotionEffectType.POISON.createEffect(100, 2));
         }
 
-        if(((Player) event.getDamager()).getInventory().getItemInMainHand().getType() == Material.ANVIL) {
+        if(InventoryManager.GetMainHand(event.getDamager()).getType() == Material.ANVIL) {
             event.setCancelled(true);
             ((Player) event.getEntity()).setWalkSpeed(0.2f);
             new Location(event.getEntity().getLocation().getWorld(), event.getEntity().getLocation().getBlockX(), event.getEntity().getLocation().getBlockY() + 50,
                     event.getEntity().getLocation().getBlockZ()).getBlock().setType(Material.ANVIL);
         }
 
-        if(((Player) event.getDamager()).getInventory().getItemInMainHand().getType() == Material.HONEYCOMB) {
+        if(InventoryManager.GetMainHand(event.getDamager()).getType() == Material.HONEYCOMB) {
             event.setDamage(0);
             Plugin pl = Bukkit.getServer().getPluginManager().getPlugin("Ladder");
 
