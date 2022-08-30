@@ -1,7 +1,9 @@
 package com.carbonlollipop.ladder.librarymain.util;
 
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
@@ -12,8 +14,16 @@ public class InstanceChecker {
         return event.getEntity() instanceof Player;
     }
 
+    public static boolean isPlayer(EntityDamageByEntityEvent event) {
+        return event.getEntity() instanceof Player;
+    }
+
     public static boolean isPlayer(CommandSender sender) {
         return sender instanceof Player;
+    }
+
+    public static boolean isPlayer(LivingEntity entity) {
+        return entity instanceof Player;
     }
 
     public static boolean isCompassUI(InventoryClickEvent e) {

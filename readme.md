@@ -1,2 +1,0 @@
-# ladder
-swag mc plguin????? (mc means MineCraft)

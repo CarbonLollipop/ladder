@@ -1,4 +1,4 @@
-package com.carbonlollipop.ladder;
+package com.carbonlollipop.ladder.playermain.events;
 
 import java.util.Random;
 
@@ -20,7 +20,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -36,24 +36,26 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import com.carbonlollipop.ladder.librarymain.constants.SpecialItemsC;
+import com.carbonlollipop.ladder.librarymain.events.Events;
+import com.carbonlollipop.ladder.librarymain.util.InstanceChecker;
 
-public class PlayerKill implements Listener {
+public class PlayerDeath implements Listener {
 
     @EventHandler
     public static void Death(PlayerDeathEvent event) {
         Player victim = event.getEntity();
         Player killer = victim.getKiller();
 
-        if(!(killer instanceof Player) || victim == killer) {
+        if(!InstanceChecker.isPlayer(killer) || victim == killer) {
             return;
         }
 
-        if(event.getEntity().getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.VOID) {
+        if(Events.lastDCause(event.getEntity(), DamageCause.VOID)) {
             event.setDeathMessage(victim.getName() + " was bopped by " + killer.getName());
             victim.teleport(new Location(victim.getWorld(), 0, 1, 0));
         }
 
-        if(event.getEntity().getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
+        if(Events.lastDCause(event.getEntity(), DamageCause.ENTITY_ATTACK)) {
             event.setDeathMessage(victim.getName() + " was chopped up by " + killer.getName());
             victim.teleport(new Location(victim.getWorld(), 0, 1, 0));
         }
@@ -73,14 +75,12 @@ public class PlayerKill implements Listener {
             return;
         }
 
-        if(event.getCause() == EntityDamageEvent.DamageCause.LIGHTNING
-                && ((Player) event.getEntity()).getInventory().getItemInMainHand().getType() == Material.DIAMOND_AXE) {
+        if(Events.causedBy(event, DamageCause.LIGHTNING) && ((Player) event.getEntity()).getInventory().getItemInMainHand().getType() == Material.DIAMOND_AXE) {
             event.setCancelled(true);
         }
 
-        if(new Location(event.getEntity().getWorld(), event.getEntity().getLocation().getBlockX(),
-                event.getEntity().getLocation().getBlockY() - 1, event.getEntity().getLocation().getBlockZ()).getBlock()
-                        .getType() == Material.LIME_WOOL) {
+        if(new Location(event.getEntity().getWorld(), event.getEntity().getLocation().getBlockX(), event.getEntity().getLocation().getBlockY() - 1, event.getEntity().getLocation().getBlockZ())
+                .getBlock().getType() == Material.LIME_WOOL) {
             event.setCancelled(true);
         }
 
@@ -93,8 +93,7 @@ public class PlayerKill implements Listener {
         }
 
         if(((Player) event.getDamager()).getInventory().getItemInMainHand().getType() == Material.DIAMOND_AXE) {
-            event.getEntity().getLocation().getWorld().spawnEntity(event.getEntity().getLocation(),
-                    EntityType.LIGHTNING);
+            event.getEntity().getLocation().getWorld().spawnEntity(event.getEntity().getLocation(), EntityType.LIGHTNING);
             event.setDamage(event.getDamage() / 3);
         }
 
@@ -108,8 +107,7 @@ public class PlayerKill implements Listener {
 
         if(((Player) event.getDamager()).getInventory().getItemInMainHand().getType() == Material.IRON_AXE
                 && event.getDamager().getUniqueId().toString().equals("531cbd17-1f75-4d6e-b560-833a9d5ed9d7")) {
-            event.getEntity().getLocation().getWorld().spawnEntity(event.getEntity().getLocation(),
-                    EntityType.LIGHTNING);
+            event.getEntity().getLocation().getWorld().spawnEntity(event.getEntity().getLocation(), EntityType.LIGHTNING);
             ((Player) event.getEntity()).kickPlayer("banhammerd xd");
         }
 
@@ -126,9 +124,8 @@ public class PlayerKill implements Listener {
         if(((Player) event.getDamager()).getInventory().getItemInMainHand().getType() == Material.ANVIL) {
             event.setCancelled(true);
             ((Player) event.getEntity()).setWalkSpeed(0.2f);
-            new Location(event.getEntity().getLocation().getWorld(), event.getEntity().getLocation().getBlockX(),
-                    event.getEntity().getLocation().getBlockY() + 50, event.getEntity().getLocation().getBlockZ())
-                            .getBlock().setType(Material.ANVIL);
+            new Location(event.getEntity().getLocation().getWorld(), event.getEntity().getLocation().getBlockX(), event.getEntity().getLocation().getBlockY() + 50,
+                    event.getEntity().getLocation().getBlockZ()).getBlock().setType(Material.ANVIL);
         }
 
         if(((Player) event.getDamager()).getInventory().getItemInMainHand().getType() == Material.HONEYCOMB) {
@@ -138,8 +135,7 @@ public class PlayerKill implements Listener {
             for(int i = 0; i < 20; i++) {
                 new BukkitRunnable() {
                     public void run() {
-                        Bee bee = (Bee) event.getEntity().getLocation().getWorld()
-                                .spawnEntity(event.getEntity().getLocation(), EntityType.BEE);
+                        Bee bee = (Bee) event.getEntity().getLocation().getWorld().spawnEntity(event.getEntity().getLocation(), EntityType.BEE);
                         bee.setTarget((LivingEntity) event.getEntity());
                         bee.setAnger(100000);
                         bee.setHealth(1);
@@ -164,8 +160,7 @@ public class PlayerKill implements Listener {
             event.getPlayer().teleport(new Location(Bukkit.getWorld("world"), 0.5, 1, 0.5));
         }
 
-        if(event.getPlayer().getInventory().getBoots() != null
-                && event.getPlayer().getInventory().getBoots().getType() == Material.DIAMOND_BOOTS) {
+        if(event.getPlayer().getInventory().getBoots() != null && event.getPlayer().getInventory().getBoots().getType() == Material.DIAMOND_BOOTS) {
             event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 20, 4));
         }
 
@@ -201,11 +196,8 @@ public class PlayerKill implements Listener {
                     int finalI = i;
                     new BukkitRunnable() {
                         public void run() {
-                            player.sendTitle(
-                                    "> " + ChatColor.GREEN + SpecialItemsC.ITEMS[finalI] + ChatColor.WHITE + " <",
-                                    ChatColor.RED + "", 0, 10, 0);
-                            player.playSound(player.getLocation(), Sound.BLOCK_WOODEN_PRESSURE_PLATE_CLICK_OFF, 1.0F,
-                                    2);
+                            player.sendTitle("> " + ChatColor.GREEN + SpecialItemsC.ITEMS[finalI] + ChatColor.WHITE + " <", ChatColor.RED + "", 0, 10, 0);
+                            player.playSound(player.getLocation(), Sound.BLOCK_WOODEN_PRESSURE_PLATE_CLICK_OFF, 1.0F, 2);
                         }
                     }.runTaskLater(pl, i + j * SpecialItemsC.ITEMS.length);
                 }
@@ -259,9 +251,7 @@ public class PlayerKill implements Listener {
             new BukkitRunnable() {
                 public void run() {
                     player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 1.0F, 2);
-                    player.sendTitle("> " + ChatColor.GREEN + ChatColor.BOLD + SpecialItemsC.ITEMS[rnd]
-                            + ChatColor.WHITE + ChatColor.RESET + " <", ChatColor.RED + "RANDOM ITEM SELECTED", 0, 20,
-                            20);
+                    player.sendTitle("> " + ChatColor.GREEN + ChatColor.BOLD + SpecialItemsC.ITEMS[rnd] + ChatColor.WHITE + ChatColor.RESET + " <", ChatColor.RED + "RANDOM ITEM SELECTED", 0, 20, 20);
                     player.getInventory().addItem(stack);
                     if(rnd == 6) {
                         player.getInventory().addItem(new ItemStack(Material.LEATHER_HELMET, 1));
@@ -279,13 +269,10 @@ public class PlayerKill implements Listener {
             }.runTaskLater(pl, 20);
         }
 
-        if(p.getInventory().getItemInMainHand().getType() == Material.BLAZE_ROD
-                && event.getAction() == Action.RIGHT_CLICK_AIR) {
+        if(p.getInventory().getItemInMainHand().getType() == Material.BLAZE_ROD && event.getAction() == Action.RIGHT_CLICK_AIR) {
             Player player = event.getPlayer();
-            Fireball fire = p.getWorld()
-                    .spawn(new Location(event.getPlayer().getWorld(), event.getPlayer().getLocation().getBlockX(),
-                            event.getPlayer().getLocation().getBlockY() + 1,
-                            event.getPlayer().getLocation().getBlockZ()), Fireball.class);
+            Fireball fire = p.getWorld().spawn(new Location(event.getPlayer().getWorld(), event.getPlayer().getLocation().getBlockX(), event.getPlayer().getLocation().getBlockY() + 1,
+                    event.getPlayer().getLocation().getBlockZ()), Fireball.class);
             p.playSound(p.getLocation(), Sound.ITEM_FIRECHARGE_USE, 1.0F, 1);
             fire.setDirection(player.getLocation().getDirection());
             fire.setInvulnerable(true);
@@ -329,12 +316,10 @@ public class PlayerKill implements Listener {
             p.setVelocity(p.getLocation().getDirection().multiply(1.5));
             p.playSound(p.getLocation(), Sound.ENTITY_SLIME_SQUISH, 1.0F, 1);
             p.addPotionEffect(PotionEffectType.CONFUSION.createEffect(80, 2));
-            p.spawnParticle(Particle.SLIME, p.getLocation().getBlockX(), p.getLocation().getBlockY(),
-                    p.getLocation().getBlockZ(), 40);
+            p.spawnParticle(Particle.SLIME, p.getLocation().getBlockX(), p.getLocation().getBlockY(), p.getLocation().getBlockZ(), 40);
         }
 
-        if(p.getInventory().getItemInMainHand().getType() == Material.LADDER
-                && p.getUniqueId().toString().equals("531cbd17-1f75-4d6e-b560-833a9d5ed9d7")) {
+        if(p.getInventory().getItemInMainHand().getType() == Material.LADDER && p.getUniqueId().toString().equals("531cbd17-1f75-4d6e-b560-833a9d5ed9d7")) {
             Bukkit.broadcastMessage(ChatColor.YELLOW + "Reloading server...");
 
             for(Player player : Bukkit.getOnlinePlayers()) {
