@@ -349,6 +349,10 @@ public class PlayerDeath implements Listener {
         }
 
         if(p.getInventory().getItemInMainHand().getType() == Material.MUSHROOM_STEW) {
+            if(p.getAllowFlight()) {
+                p.sendMessage(ChatColor.YELLOW + "You already have the ability to fly!");
+                return;
+            }
             p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
             p.setAllowFlight(true);
             p.setFlying(true);
