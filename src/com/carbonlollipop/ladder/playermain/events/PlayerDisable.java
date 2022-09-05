@@ -26,7 +26,7 @@ public class PlayerDisable implements Listener {
             event.setDamage(0);
         }
 
-        if(((Player) event.getEntity()).getPlayer().getInventory().getChestplate().getType() == Material.NETHERITE_CHESTPLATE && event.getCause() == DamageCause.ENTITY_ATTACK) {
+        if(((Player) event.getEntity()).getPlayer().getInventory().getChestplate() != null && ((Player) event.getEntity()).getPlayer().getInventory().getChestplate().getType() == Material.NETHERITE_CHESTPLATE && event.getCause() == DamageCause.ENTITY_ATTACK) {
             event.setCancelled(true);
             ((Player) event.getEntity()).damage(event.getDamage());
         }
