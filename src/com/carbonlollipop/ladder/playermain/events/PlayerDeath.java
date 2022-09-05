@@ -24,6 +24,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -216,7 +217,7 @@ public class PlayerDeath implements Listener {
                 case 3 -> stack = new ItemStack(Material.HONEYCOMB);
                 case 4 -> stack = new ItemStack(Material.DIAMOND_AXE);
                 case 5 -> stack = new ItemStack(Material.IRON_HOE);
-                case 6 -> stack = new ItemStack(Material.STONE_SWORD);
+                case 6 -> stack = new ItemStack(Material.DIAMOND_SWORD);
                 case 7 -> stack = new ItemStack(Material.LEATHER_LEGGINGS);
                 case 8 -> stack = new ItemStack(Material.DIAMOND_BOOTS);
                 case 9 -> stack = new ItemStack(Material.COOKED_BEEF);
@@ -235,18 +236,19 @@ public class PlayerDeath implements Listener {
                 m.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 10, true);
             } else if(rnd == 8) {
                 m.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4, true);
-            } else if(rnd == 6) {
-                m.addEnchant(Enchantment.DAMAGE_ALL, 4, true);
+            } else if(rnd == 6) { 
             } else if(rnd == 11) {
                 m.addEnchant(Enchantment.PROTECTION_EXPLOSIONS, 10, true);
             } else if(rnd == 9) {
                 stack.setAmount(16);
             } else {
                 m.addEnchant(Enchantment.DURABILITY, 1, true);
+                m.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             }
 
             m.setDisplayName(ChatColor.RESET + SpecialItemsC.ITEMS[rnd]);
             m.setUnbreakable(true);
+            m.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
             stack.setItemMeta(m);
 
             new BukkitRunnable() {

@@ -19,7 +19,6 @@ public class PlayerDisable implements Listener {
             return;
         }
 
-
         Player p = (Player) event.getEntity();
 
         if(Events.causedBy(event, DamageCause.ENTITY_EXPLOSION)) {
